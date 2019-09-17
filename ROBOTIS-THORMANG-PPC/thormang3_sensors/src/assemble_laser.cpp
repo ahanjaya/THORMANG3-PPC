@@ -31,12 +31,9 @@
 #include <pcl_conversions/pcl_conversions.h>
 
 ros::Time           g_lidar_move_start_time;
-
 ros::Publisher      g_point_cloud2_pub;
-
 ros::Subscriber     g_lidar_turn_start_sub;
 ros::Subscriber     g_lidar_turn_end_sub;
-
 ros::ServiceClient  g_assemble_chest_laser_client;
 
 typedef pcl::PointXYZ PointT;
@@ -53,18 +50,23 @@ void assembleLaserScans(ros::Time before_time, ros::Time end_time)
   service.request.begin = before_time;
   service.request.end = end_time;
 
+  ROS_INFO_STREAM("Start time: " << before_time);
+  ROS_INFO_STREAM("End time: " << end_time);
+
   if (g_assemble_chest_laser_client.call(service))
   {
     ros::Time assemble_time = ros::Time::now();
     sensor_msgs::PointCloud2 assembler_output = service.response.cloud;
+
+    ROS_INFO_STREAM(assembler_output);
+
     if (assembler_output.data.size() == 0)
     {
-      // ROS_INFO("No scan data");
+      ROS_INFO("No scan data");
       return;
     }
 
     ROS_INFO("  ---  publish pointcloud data!!  ---  %f", (ros::Time::now() - assemble_time).toSec());
-
     g_point_cloud2_pub.publish(assembler_output);
   }
 }
@@ -75,10 +77,12 @@ void lidarTurnCallBack(const std_msgs::String::ConstPtr& msg)
 
   if (msg->data == "start")
   {
+    ROS_INFO("Lidar turn call back start");
     g_lidar_move_start_time = now;
   }
   else if (msg->data == "end")
   {
+    ROS_INFO("Lidar turn call back end");
     // assemble laser
     assembleLaserScans(g_lidar_move_start_time, now);
     g_lidar_move_start_time = now;

@@ -16,6 +16,7 @@
   <!-- service to assemble laserscan to pointcloud -->
   <node pkg="laser_assembler" type="laser_scan_assembler" name="my_assembler_chest">
     <remap from="scan" to="$(arg filter_output_scan)"/>
+    <!-- <param name="tf_cache_time_secs" type="double" value="10.0" /> -->
     <param name="max_scans" type="int" value="600" />
     <param name="fixed_frame" type="string" value="$(arg assembler_frame)" />
     <param name="ignore_laser_skew" type="bool" value="true" />

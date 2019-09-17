@@ -29,6 +29,7 @@ ros::Publisher g_done_msg_pub;
 
 void play_sound_callback(const std_msgs::String::ConstPtr& msg)
 {
+
   std_msgs::String done_msg;
 
   if(msg->data == "")
@@ -71,6 +72,7 @@ int main(int argc, char** argv)
   ros::NodeHandle nh;
 
   g_sound_file_path = nh.param<std::string>("sound_file_path", "");
+
   if(g_sound_file_path != "" && g_sound_file_path.compare(g_sound_file_path.size()-1, 1, "/") != 0)
     g_sound_file_path += "/";
 
