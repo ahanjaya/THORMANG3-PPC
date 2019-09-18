@@ -65,7 +65,7 @@ void assembleLaserScans(ros::Time before_time, ros::Time end_time)
       ROS_INFO("No scan data");
       return;
     }
-
+    
     ROS_INFO("  ---  publish pointcloud data!!  ---  %f", (ros::Time::now() - assemble_time).toSec());
     g_point_cloud2_pub.publish(assembler_output);
   }

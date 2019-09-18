@@ -19,10 +19,12 @@
     <!-- <param name="tf_cache_time_secs" type="double" value="10.0" /> -->
     <param name="max_scans" type="int" value="600" />
     <param name="fixed_frame" type="string" value="$(arg assembler_frame)" />
-    <param name="ignore_laser_skew" type="bool" value="true" />
+    <!-- <param name="ignore_laser_skew" type="bool" value="true" /> -->
     <remap from="/assemble_scans2" to="/robotis/sensor/service/assemble_scans2" />
   </node>
 
   <!-- assemble laserscan -->
-  <node pkg="thormang3_sensors" type="assemble_laser_node" output="screen" name="laser_assem" />
+  <!-- <node pkg="thormang3_sensors" type="assemble_laser_node" output="screen" name="laser_assem" /> -->
+  <node pkg="thormang3_sensors" type="laser2pc.py" output="screen" name="assemble_scans_to_cloud" />
+
 </launch>
