@@ -58,11 +58,12 @@ void assembleLaserScans(ros::Time before_time, ros::Time end_time)
     ros::Time assemble_time = ros::Time::now();
     sensor_msgs::PointCloud2 assembler_output = service.response.cloud;
 
-    ROS_INFO_STREAM(assembler_output);
+    // ROS_INFO_STREAM(assembler_output);
 
     if (assembler_output.data.size() == 0)
     {
       ROS_INFO("No scan data");
+      ROS_WARN("Please synchronize time of PPC, MPC and OPC");
       return;
     }
     
