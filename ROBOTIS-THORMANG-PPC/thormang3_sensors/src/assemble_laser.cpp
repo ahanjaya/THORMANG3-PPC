@@ -64,6 +64,7 @@ void assembleLaserScans(ros::Time before_time, ros::Time end_time)
     {
       ROS_INFO("No scan data");
       ROS_WARN("Please synchronize time of PPC, MPC and OPC");
+      ROS_WARN("run .~/timesync in OPC to synchronize all together");
       return;
     }
     
