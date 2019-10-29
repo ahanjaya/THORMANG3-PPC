@@ -29,7 +29,6 @@ ros::Publisher g_done_msg_pub;
 
 void play_sound_callback(const std_msgs::String::ConstPtr& msg)
 {
-
   std_msgs::String done_msg;
 
   if(msg->data == "")
@@ -63,7 +62,18 @@ void play_sound_callback(const std_msgs::String::ConstPtr& msg)
     g_done_msg_pub.publish(done_msg);
     break;
   }
+}
 
+void set_volume_callback(const std_msgs::Int16::ConstPtr& msg)
+{
+  // ROS_INFO_STREAM("Set volume to: " << msg->data);
+  // char command[] = "pactl set-sink-volume @DEFAULT_SINK@ 10%";
+
+  char command[50];
+  sprintf(command, "pactl set-sink-volume @DEFAULT_SINK@ %d", msg->data);
+  strcat(command,"%");
+  // ROS_INFO_STREAM(command);
+  system(command);
 }
 
 int main(int argc, char** argv)
@@ -77,6 +87,7 @@ int main(int argc, char** argv)
     g_sound_file_path += "/";
 
   ros::Subscriber play_mp3_sub = nh.subscribe("/play_sound_file", 10, &play_sound_callback);
+  ros::Subscriber volume_sub   = nh.subscribe("/set_volume",      10, &set_volume_callback);
   g_done_msg_pub = nh.advertise<std_msgs::String>("/robotis/movement_done", 5);
 
   ros::spin();
